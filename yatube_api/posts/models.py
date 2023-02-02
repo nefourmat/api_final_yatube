@@ -21,9 +21,12 @@ class Post(models.Model):
     image = models.ImageField(
         upload_to='posts/', null=True, blank=True)
     group = models.ForeignKey(
-        Group, on_delete=models.CASCADE,
+        Group, on_delete=models.SET_NULL,
         related_name="posts", blank=True, null=True
     )
+
+    class Meta:
+        ordering = ('pub_date',)
 
     def __str__(self):
         return self.text[:15]
@@ -58,4 +61,4 @@ class Follow(models.Model):
         ]
 
     def __str__(self):
-        return (self.user, self.following)
+        return f"{self.user.username} подписчик {self.following.username}"
